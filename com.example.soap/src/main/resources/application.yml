@@ -1,0 +1,74 @@
+spring:
+  profiles:
+    active: dev
+
+---
+
+spring:
+  profiles: dev  datasource:    hikari:      connection-timeout: 5000
+      
+client:
+  ticketagent:
+    address: http://localhost:9090/servicio/ws/helloworld
+    
+server:
+  port: 9090  max-http-header-size: 20000
+  connection-timeout: 3000
+
+
+cxf:
+  path: /servicio/ws
+
+http:
+    multipart:
+      max-file-size: 1024Mb
+      max-request-size: 512Mb
+  
+to.cxf: direct:addEmision
+
+PathSftp: /INVOICE/DESARROLLO/
+PathSftpFinal: _01/IN
+to.factuInd: file:facturasIndividuales
+to.xslt: file:xslts
+to.xslt1: file:xslts
+to.xslt2: xslt:file:xslts/xslt-2.xslt
+to.xslt3: file:xslts
+to.xslt4: file:xslts
+
+ipJMS: 172.18.48.121
+portJMS: 61616
+
+urlDatabase: jdbc:sqlserver://192.168.1.114:1433;DatabaseName=SGFEPIE_Produccion
+usrDatabase: sa
+passwdDatabase: sk1lln3t
+Database: SGFEPIE_Produccion
+
+
+
+  
+
+
+
+---
+spring:
+  profiles: lin
+  
+to.cxf: direct:addEmision  
+to.facindividual: file:///tmp/facturas1x1
+to.xslt: file:///tmp/xsltGrasco
+to.xslt1: file:///tmp/xsltGrasco/xslt_1.xslt
+to.xslt2: file:///tmp/xsltGrasco/xslt_2.xslt
+to.xslt3: file:///tmp/xsltGrasco/xslt_3.xslt
+to.xslt4: file:///tmp/xsltGrasco/xslt_4.xslt
+
+connection.jms: 172.18.48.121:61616
+
+client:
+  ticketagent:
+    address: http://localhost:9090/servicio/ws/helloworld
+
+server:
+  port: 9090
+
+cxf:
+  path: /servicio/ws

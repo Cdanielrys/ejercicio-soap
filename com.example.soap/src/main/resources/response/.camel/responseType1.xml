@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt_xmlrespuestafactura>
+	<tt_xmlrespuestafacturaRow>
+    	<cunidadnegocio></cunidadnegocio>
+        <uuid></uuid>
+        <idtransaccion></idtransaccion>
+        <numero_oficial_de></numero_oficial_de>
+        <id_documento_electronico ></id_documento_electronico >
+        <fecha_oficial_de></fecha_oficial_de>
+        <xmlfuente></xmlfuente>
+        <sistemaorigen></sistemaorigen>
+        <idcontext></idcontext> 
+        <fecha_proceso></fecha_proceso> 
+        <msjerror></msjerror>                       
+ 	</tt_xmlrespuestafacturaRow>
+	
+</tt_xmlrespuestafactura>

@@ -1,0 +1,7 @@
+<tt_respuesta>
+	<tt_respuestaRow>
+		<tiporespuesta>${exchange.properties.tipoResponse1}</tiporespuesta>		
+		<tt_xmlrespuestafactura>${exchange.properties.xmlResponse1}</tt_xmlrespuestafactura>
+		<fecha_respuesta>${exchange.properties.fecha_proceso}</fecha_respuesta>
+	</tt_respuestaRow>         
+</tt_respuesta>

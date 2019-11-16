@@ -1,0 +1,4 @@
+<ttxmlrespuestaPaquete>
+	<fueprocesado>${exchange.properties.booleanSql}</fueprocesado>
+	<msjerror>${exchange.properties.xmlResponse2}</msjerror>
+</ttxmlrespuestaPaquete>

@@ -1,0 +1,4 @@
+<ttxmlrespuestaPaquete>
+	<fueprocesado>${exchange.properties.booleanJMS}</fueprocesado>
+	<msjerror>${exchange.properties.exception_jms}</msjerror>
+</ttxmlrespuestaPaquete>

@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://onivia.com/ServicioCliente">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:ObtenerCliente>
+         <!--Optional:-->
+         <ser:nit_clie>${exchange.properties.nit}</ser:nit_clie>
+         <!--Optional:-->
+         <ser:razonsocial_clie>companySAS</ser:razonsocial_clie>
+      </ser:ObtenerCliente>
+   </soapenv:Body>
+</soapenv:Envelope>

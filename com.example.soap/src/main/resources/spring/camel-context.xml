@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring        http://camel.apache.org/schema/spring/camel-spring.xsd  http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.8.3.xsd">
+    <!-- <bean id="requestValidador" class="com.grasco.validate.validator"></bean> -->
+    <!-- <bean id="proceVali" class="com.grasco.bean.ProcesadorValidate"></bean> -->
+    <bean class="com.grasco.bean.ProcesadorDecode" id="proce"/>
+    <bean class="com.grasco.bean.ProcesadorEncode" id="proceDecode"/>
+    <bean class="com.grasco.exceptions.StoreProException" id="proceEXE"/>
+    <bean
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="bean-5bbfa6d2-516c-4687-9d16-1944031fa2ff"/>
+    <!-- ======================================== Bean conexion con JMS (cola ========================================================= -->
+<!--    <bean id="jmstranssacted" class="org.apache.camel.spring.spi.SpringTransactionPolicy"> -->
+<!--    	<property name="transactionManager" ref="jms"/> -->
+<!--    </bean> -->
+    
+    <bean class="org.apache.camel.component.jms.JmsComponent" id="jms">
+        <property name="connectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL" value="tcp://localhost:61616"/>
+            </bean>
+        </property>
+    </bean>
+    <!-- ======================================== Bean conexion Base de datos ========================================================= -->
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" id="reportdbPool">
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        <property name="url" value="jdbc:sqlserver://192.168.1.114:1433;DatabaseName=SGFEPIE_Produccion"/>
+        <property name="username" value="sa"/>
+        <property name="password" value="sk1lln3t"/>
+    </bean>
+    <!-- ======================================== Bean SOAP cxf ========================================================= -->
+    <cxf:cxfEndpoint address="/grasco/emision"
+        endpointName="a:TestWebServiceImplPort" id="CXFTest"
+        serviceClass="com.grasco.services.TestWebService"
+        serviceName="a:TestWebServiceImplService"
+        wsdlURL="/wsdl/validador.wsdl" xmlns:a="http://services.grasco.com/">
+        <!-- <cxf:properties> -->
+        <!-- <entry key="exceptionMessageCauseEnabled" value="true"/> -->
+        <!-- <entry key="dataFormat" value="PAYLOAD"/> -->
+        <!-- <entry key="schema-validation-enabled" value="true"/> -->
+        <!-- <entry key="faultStackTraceEnabled" value="true"/> -->
+        <!-- </cxf:properties> -->
+    </cxf:cxfEndpoint>
+    <!-- ======================================== Arranque de la ruta (camle 
+		context) ========================================================= -->
+    <camelContext id="camel" streamCache="true" threadNamePattern="100" xmlns="http://camel.apache.org/schema/spring">
+        <threadPoolProfile defaultProfile="true" id="changedProfile"
+            maxQueueSize="100" poolSize="3"/>
+        <onException>
+            <exception>java.sql.SQLException</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <to uri="direct:errorDB"/>
+        </onException>
+        <onException>
+            <exception>org.xml.sax.SAXException</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <to uri="direct:errorXML"/>
+        </onException>
+        <onException>
+            <exception>javax.jms.JMSException</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <to uri="direct:errorJMS"/>
+        </onException>
+        <route id="RT-MAIN-CXF-SOAP">
+            <from id="_from1" uri="cxf:bean:CXFTest?dataFormat=MESSAGE"/>
+            <log id="_log1" message=" ===========================  ${date:now:yyyyMMdd'T'HHmmssSSS}"/>
+            <toD id="_toD1" uri="direct:addEmision"/>
+        </route>
+        <route id="_route1">
+            <from id="_from2" uri="direct:addEmision"/>
+            <log id="_log2" message="el body es:\${body}"/>
+            <setProperty id="_setProperty1" propertyName="nit">
+                <xpath resultType="String">//testId/text()</xpath>
+            </setProperty>
+            <log id="_log3" message="El valor capturado es: ${property.nit}"/>
+            <to id="_to1" uri="velocity:templateSoap/request.vm"/>
+            <log id="_log4" message="Request to Soap: ${body}"/>
+            <setHeader headerName="Exchange.HTTP_URI">
+            	<simple>http://webcomercialdersa.com.co:8383/PruebasESB/ServicioCliente.svc</simple>
+            </setHeader>
+            <setHeader headerName="Exchange.HTTP_METHOD">
+            	<simple>GET</simple>
+            </setHeader>
+            <setHeader headerName="Exchange.CONTENT_TYPE">
+            	<simple>application/xml</simple>
+            </setHeader>
+            <to uri="http4:localhost"></to>
+			<log id="_log4" message="Responseeeeeee to Soap: ${body}"/>
+			<to pattern="InOnly" uri="jms:example"></to>
+	
+        </route>
+        
+        <route>
+        	<from uri="jms:example"/>
+        	<log  message="Message extracted amq: ${body}"/>
+<!--         	<transacted ref="jmstranssacted"/> -->
+        	<setProperty propertyName="nombre-archivo">
+        		<simple>file-${date:now:yyyyMMdd'T'HHmmssSSS}.xml</simple> 
+        	</setProperty>
+        	<log message="enviado con exito sftp"/>
+        	<to uri="sftp://tester:password@192.168.0.21:22/data/example?fileName=${property.nombre-archivo}"></to>
+        </route>
+        
+   
+    </camelContext>
+</beans>

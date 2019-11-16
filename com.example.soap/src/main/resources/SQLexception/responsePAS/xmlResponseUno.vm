@@ -1,0 +1,20 @@
+<tt_xmlrespuestafactura>
+	<tt_xmlrespuestafacturaRow>
+		<uuid>${exchange.properties.uuid}</uuid>
+		<idtransaccion>${exchange.properties.idtransaccion}</idtransaccion>
+		<cunidadnegocio>${exchange.properties.cunidadnegocio}</cunidadnegocio>
+		<numero_oficial_de>${exchange.properties.numero_oficial_de}</numero_oficial_de>
+		<id_documento_electronico>${exchange.properties.id_documento_electronico}</id_documento_electronico>
+		<fecha_oficial_de>${exchange.properties.fecha_oficial_de}</fecha_oficial_de>
+		<url_sftp>${exchange.properties.url_proveedortecnologico}</url_sftp>
+		<fullpathftp>${exchange.properties.path_SFTP}</fullpathftp>
+		<xmlfuente>${exchange.properties.xml_fuente_deco}</xmlfuente>
+		<xslt>${exchange.properties.tt_xslt_deco}</xslt>
+		<xmltransformado>${exchange.properties.xml_transformado}</xmltransformado>
+		<sistemaorigen>${exchange.properties.sistemaorigen}</sistemaorigen>
+		<msj_respuesta_ftp></msj_respuesta_ftp>
+		<fecha_proceso>${exchange.properties.fecha_proceso}</fecha_proceso>
+		<idTrazaLog>${exchange.properties.id_traza_log}</idTrazaLog> 
+		<msjerror>${exchange.properties.exception_sql}</msjerror>
+	</tt_xmlrespuestafacturaRow>
+</tt_xmlrespuestafactura>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<tt_xmlrespuestafactura>
+		<tt_xmlrespuestafacturaRow>
+	       <uuid></uuid>
+	       <idtransaccion></idtransaccion>
+	       <cunidadnegocio></cunidadnegocio>
+	       <nit_proveedortecnologico></nit_proveedortecnologico>
+	       <url_proveedortecnologico>holaaaa</url_proveedortecnologico>
+	       <usr_proveedortecnologico></usr_proveedortecnologico>
+	       <psswd_proveedortecnologico></psswd_proveedortecnologico>
+	       <tt_operabilidad></tt_operabilidad>
+	       <tt_xslt></tt_xslt>
+	</tt_xmlrespuestafacturaRow>
+</tt_xmlrespuestafactura>
